@@ -158,6 +158,7 @@ src = "/"
 verbose = true
 module = "superstore"
 path = "."
+abi3 = true
 
 [tool.hatch.build.targets.sdist]
 packages = [
