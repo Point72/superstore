@@ -214,6 +214,15 @@ section-order = [
 title = "superstore"
 root = "README.md"
 pages = [
+    "docs/src/retail.md",
+    "docs/src/timeseries.md",
+    "docs/src/weather.md",
+    "docs/src/logs.md",
+    "docs/src/finance.md",
+    "docs/src/telemetry.md",
+    "docs/src/distributions.md",
+    "docs/src/copulas.md",
+    "docs/src/temporal.md",
     "docs/src/api.md",
 ]
 use-autoapi = false
