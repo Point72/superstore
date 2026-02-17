@@ -74,15 +74,15 @@ format: fix
 ################
 # Other Checks #
 ################
-.PHONY: check-manifest stubtest checks check
+.PHONY: check-manifest types checks check
 
 check-manifest:  ## check python sdist manifest with check-manifest
 	check-manifest -v
 
-stubtest:  ## validate type stubs against runtime module
+types:  ## validate type stubs against runtime module
 	python -m mypy.stubtest superstore.superstore --allowlist superstore/stubtest_allowlist.txt --ignore-unused-allowlist
 
-checks: check-manifest stubtest
+checks: check-manifest types
 
 # alias
 check: checks

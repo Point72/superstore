@@ -3,11 +3,15 @@ __version__ = "0.3.0"
 # Import directly from the native Rust module
 # Import configuration classes from pydantic models
 from .config import (
+    # Config classes
+    CartConfig,
+    CatalogConfig,
     # Enums
     ClimateZone,
-    # Config classes
     CrossfilterConfig,
+    EcommerceConfig,
     FinanceConfig,
+    FunnelConfig,
     LogFormat,
     LogLevel,
     LogsConfig,
@@ -15,7 +19,9 @@ from .config import (
     OhlcvConfig,
     OptionsConfig,
     OutputFormat,
+    RfmConfig,
     Season,
+    SessionConfig,
     StockConfig,
     SuperstoreConfig,
     TimeseriesConfig,
@@ -23,6 +29,7 @@ from .config import (
     WeatherEvent,
     # Factory functions
     crossfilter_config,
+    ecommerce_config,
     finance_config,
     logs_config,
     superstore_config,
@@ -54,6 +61,10 @@ from .superstore import (
     addGaussianNoise,
     app_logs,
     applyMissing,
+    # E-commerce generators
+    ecommerce_data,
+    ecommerce_products,
+    ecommerce_sessions,
     # Core generators
     employees,
     # Arrow IPC export
@@ -206,4 +217,16 @@ __all__ = (
     "OhlcvConfig",
     "OptionsConfig",
     "finance_config",
+    # E-commerce generators
+    "ecommerce_data",
+    "ecommerce_sessions",
+    "ecommerce_products",
+    # E-commerce config
+    "EcommerceConfig",
+    "SessionConfig",
+    "CartConfig",
+    "CatalogConfig",
+    "RfmConfig",
+    "FunnelConfig",
+    "ecommerce_config",
 )

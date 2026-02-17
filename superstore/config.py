@@ -687,6 +687,238 @@ class FinanceConfig(BaseModel):
 
 
 # =============================================================================
+# E-commerce Generator Configuration
+# =============================================================================
+
+
+class SessionConfig(BaseModel):
+    """Configuration for session behavior in e-commerce."""
+
+    avg_pages_per_session: float = Field(
+        default=5.0,
+        ge=1.0,
+        description="Average pages viewed per session",
+    )
+    cart_add_probability: float = Field(
+        default=0.15,
+        ge=0.0,
+        le=1.0,
+        description="Probability of adding item to cart given product view",
+    )
+    checkout_start_probability: float = Field(
+        default=0.40,
+        ge=0.0,
+        le=1.0,
+        description="Probability of starting checkout given cart view",
+    )
+    purchase_completion_probability: float = Field(
+        default=0.65,
+        ge=0.0,
+        le=1.0,
+        description="Probability of completing purchase given checkout start",
+    )
+    avg_session_duration_seconds: int = Field(
+        default=300,
+        ge=1,
+        description="Average session duration in seconds",
+    )
+    enable_bounces: bool = Field(
+        default=True,
+        description="Enable session bounces (single-page visits)",
+    )
+    bounce_rate: float = Field(
+        default=0.35,
+        ge=0.0,
+        le=1.0,
+        description="Bounce rate (probability of immediate exit)",
+    )
+
+
+class CartConfig(BaseModel):
+    """Configuration for cart behavior."""
+
+    avg_items_per_cart: float = Field(
+        default=2.5,
+        ge=1.0,
+        description="Average items per cart",
+    )
+    remove_probability: float = Field(
+        default=0.10,
+        ge=0.0,
+        le=1.0,
+        description="Probability of removing an item from cart",
+    )
+    quantity_update_probability: float = Field(
+        default=0.05,
+        ge=0.0,
+        le=1.0,
+        description="Probability of updating quantity",
+    )
+    max_items: int = Field(
+        default=20,
+        ge=1,
+        description="Maximum items per cart",
+    )
+    enable_abandonment: bool = Field(
+        default=True,
+        description="Enable cart abandonment simulation",
+    )
+    abandonment_rate: float = Field(
+        default=0.70,
+        ge=0.0,
+        le=1.0,
+        description="Cart abandonment rate",
+    )
+
+
+class CatalogConfig(BaseModel):
+    """Configuration for product catalog."""
+
+    num_products: int = Field(
+        default=500,
+        ge=1,
+        description="Number of unique products",
+    )
+    min_price: float = Field(
+        default=5.0,
+        ge=0.01,
+        description="Minimum product price",
+    )
+    max_price: float = Field(
+        default=1000.0,
+        ge=1.0,
+        description="Maximum product price",
+    )
+    lognormal_prices: bool = Field(
+        default=True,
+        description="Price follows log-normal distribution (realistic skew)",
+    )
+    categories: list[str] = Field(
+        default_factory=lambda: [
+            "Electronics",
+            "Clothing",
+            "Home & Garden",
+            "Sports",
+            "Beauty",
+            "Books",
+            "Toys",
+            "Food",
+        ],
+        description="Product categories",
+    )
+
+
+class RfmConfig(BaseModel):
+    """Configuration for RFM (Recency, Frequency, Monetary) analysis."""
+
+    enable: bool = Field(
+        default=True,
+        description="Enable RFM metrics calculation",
+    )
+    recency_window_days: int = Field(
+        default=365,
+        ge=1,
+        description="Days to look back for recency",
+    )
+    num_buckets: int = Field(
+        default=5,
+        ge=2,
+        le=10,
+        description="Number of RFM score buckets (typically 5)",
+    )
+    pareto_shape: float = Field(
+        default=1.5,
+        ge=1.0,
+        description="Pareto distribution shape for customer value (80/20 rule)",
+    )
+
+
+class FunnelConfig(BaseModel):
+    """Configuration for conversion funnel."""
+
+    enable: bool = Field(
+        default=True,
+        description="Enable funnel stage tracking",
+    )
+    stages: list[str] = Field(
+        default_factory=lambda: [
+            "visit",
+            "view_product",
+            "add_to_cart",
+            "checkout",
+            "purchase",
+        ],
+        description="Funnel stages",
+    )
+    time_of_day_effects: bool = Field(
+        default=True,
+        description="Time-of-day effects on conversions",
+    )
+    day_of_week_effects: bool = Field(
+        default=True,
+        description="Day-of-week effects on conversions",
+    )
+
+
+class EcommerceConfig(BaseModel):
+    """Configuration for e-commerce data generation.
+
+    Generates realistic e-commerce data including:
+    - User sessions via MarkovChain state machines
+    - Shopping cart events with abandonment patterns
+    - Customer RFM (Recency, Frequency, Monetary) metrics
+    - Product catalog with categories and pricing
+    - Conversion funnels with realistic drop-off rates
+    """
+
+    sessions: int = Field(
+        default=10000,
+        ge=1,
+        description="Number of sessions to generate",
+    )
+    customers: int = Field(
+        default=2000,
+        ge=1,
+        description="Number of unique customers",
+    )
+    seed: int | None = Field(
+        default=None,
+        description="Random seed for reproducibility",
+    )
+    start_date: str | None = Field(
+        default=None,
+        description="Start date for data generation (YYYY-MM-DD)",
+    )
+    days: int = Field(
+        default=30,
+        ge=1,
+        description="Number of days to generate",
+    )
+    session: SessionConfig = Field(
+        default_factory=SessionConfig,
+        description="Session behavior configuration",
+    )
+    cart: CartConfig = Field(
+        default_factory=CartConfig,
+        description="Cart behavior configuration",
+    )
+    catalog: CatalogConfig = Field(
+        default_factory=CatalogConfig,
+        description="Product catalog configuration",
+    )
+    rfm: RfmConfig = Field(
+        default_factory=RfmConfig,
+        description="RFM analysis configuration",
+    )
+    funnel: FunnelConfig = Field(
+        default_factory=FunnelConfig,
+        description="Conversion funnel configuration",
+    )
+
+    model_config = {"use_enum_values": True}
+
+
+# =============================================================================
 # Convenience factory functions
 # =============================================================================
 
@@ -719,3 +951,8 @@ def logs_config(**kwargs) -> LogsConfig:
 def finance_config(**kwargs) -> FinanceConfig:
     """Create a finance configuration with the given parameters."""
     return FinanceConfig(**kwargs)
+
+
+def ecommerce_config(**kwargs) -> EcommerceConfig:
+    """Create an e-commerce configuration with the given parameters."""
+    return EcommerceConfig(**kwargs)

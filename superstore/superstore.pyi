@@ -249,6 +249,68 @@ def app_logs(
 ) -> pd.DataFrame | pl.DataFrame | list[dict[str, Any]]: ...
 
 # =============================================================================
+# E-commerce generators
+# =============================================================================
+
+@overload
+def ecommerce_sessions(
+    count: int,
+    seed: int | None = ...,
+    output: Literal["pandas"] = ...,
+) -> pd.DataFrame: ...
+@overload
+def ecommerce_sessions(
+    count: int,
+    seed: int | None = ...,
+    *,
+    output: Literal["polars"],
+) -> pl.DataFrame: ...
+@overload
+def ecommerce_sessions(
+    count: int,
+    seed: int | None = ...,
+    *,
+    output: Literal["dict"],
+) -> dict[str, Any]: ...
+@overload
+def ecommerce_products(
+    count: int,
+    seed: int | None = ...,
+    output: Literal["pandas"] = ...,
+) -> pd.DataFrame: ...
+@overload
+def ecommerce_products(
+    count: int,
+    seed: int | None = ...,
+    *,
+    output: Literal["polars"],
+) -> pl.DataFrame: ...
+@overload
+def ecommerce_products(
+    count: int,
+    seed: int | None = ...,
+    *,
+    output: Literal["dict"],
+) -> dict[str, Any]: ...
+@overload
+def ecommerce_data(
+    config: dict[str, Any] | None = ...,
+    output: Literal["pandas"] = ...,
+) -> dict[str, pd.DataFrame]: ...
+@overload
+def ecommerce_data(
+    config: dict[str, Any] | None = ...,
+    *,
+    output: Literal["polars"],
+) -> dict[str, pl.DataFrame]: ...
+@overload
+def ecommerce_data(
+    config: dict[str, Any] | None = ...,
+    *,
+    output: Literal["dict"],
+) -> dict[str, Any]: ...
+
+# =============================================================================
 # Finance generators
 # =============================================================================
 
