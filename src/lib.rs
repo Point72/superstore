@@ -5,6 +5,7 @@ mod copulas;
 mod correlation;
 mod crossfilter;
 mod distributions;
+mod ecommerce;
 mod export;
 mod finance;
 mod general;
@@ -75,6 +76,9 @@ fn superstore(m: &Bound<PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(finance::stock_prices, m)?)?;
     m.add_function(wrap_pyfunction!(finance::options_chain, m)?)?;
     m.add_function(wrap_pyfunction!(finance::finance, m)?)?;
+
+    // Ecommerce module
+    ecommerce::register_ecommerce(m)?;
 
     Ok(())
 }
