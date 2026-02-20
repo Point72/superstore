@@ -102,9 +102,9 @@ ignore = [
     "Cargo.lock",
     "Makefile",
     "docs/**/*",
-    "rust/.config/*",
-    "rust/Cargo.lock",
-    "rust/README.md",
+    "rust/**/*",
+    "src/**/*",
+    "target/**/*",
 ]
 
 [tool.cibuildwheel]
@@ -163,16 +163,24 @@ abi3 = true
 [tool.hatch.build.targets.sdist]
 packages = [
     "superstore",
-    "/rust",
-    "/src",
 ]
-sources = [
-    ".",
+include = [
+    "Cargo.lock",
+    "Cargo.toml",
+    "rust",
+    "src",
+]
+exclude = [
+    "target",
 ]
 
 [tool.hatch.build.targets.wheel]
 packages = [
     "superstore",
+]
+exclude = [
+    "src",
+    "rust",
 ]
 
 [tool.pytest.ini_options]
